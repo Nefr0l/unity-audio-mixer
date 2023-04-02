@@ -1,2 +1,5 @@
 # Unity audio mixer controlling demo
-Sample project with everything you need to control multiple audio groups like music, fx, sfx etc. Contains unity project with audio controls of music and fx, data saving and guide to audio mixers.
+Sample project with basic toolkit for implementing group audio control for your unity game. 
+With this demo you can split your audio files into groups (music, fx, sfx etc.) using audio mixer and
+control them using UI sliders for each group which can be used in game settings for example. This example also includes
+simple data saving for volume variables.
