@@ -2,45 +2,35 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-    /*
-    SKRYPT ZARZĄDZAJĄCY GŁOŚNOŚCIĄ MIXERÓW AUDIO
-     
-    Aby skrypt działał musisz dodać ExposedParameter do każdej z grup mixera
-    1. Zaznacz AudioMixerGroup jaką chcesz edytować
-    2. Najedź w inspectorze na "Volumne" i kliknij prawym przyciskiem myszy
-    3. Wybierz pierwszą od góry opcję
+    /* Skrypt zarządzający mixerami audio
 
-    Następnie zmień ich nazwy:
-    1. Kliknij w okienku z grupami na Exposed Parameters (w prawym górnym rogu)
-    2. Kliknij prawym przycsikiem myszy na każdy z kolei parametr i zmień jego nazwę (wybierając rename)
+    Aby skrypt działał musisz dodać ExposedParameter do każdej z grup mixera oraz zmienić nazwę parametrów
+    1. Zaznacz grupę mixera audio w zakładce "Audio mixer"
+    2. Kliknij ppm na napis "Volume" w zakładce "Inspector i wybierz opcję "Expose parameter"
+    3. W zakładce "Audio mixer" kliknij w prawym górnym rogu na "Exposed parameters" i zmień nazwę każdego klikając ppm i wybierając "rename"
     */
 
 public class Manager : MonoBehaviour
 {
-    // Elementy kontroli głośności
     public Slider musicSlider;
     public Slider fxSlider;
     
-    // Zmienne dotyczące głośności
     private float musicVolume;
     private float fxVolume;
     public AudioMixer mixer;
 
-    // Początkowa pętla
     void Start()
     {
         if (PlayerPrefs.HasKey("fxVolume")) { ReadData(); }
     }
 
-    // Zapisywanie danych
-    public void SaveData()
+    private void SaveData()
     {
         PlayerPrefs.SetFloat("musicVolume", musicVolume);
         PlayerPrefs.SetFloat("fxVolume", fxVolume);
     }
 
-    // Wczytywanie danych
-    public void ReadData()
+    private void ReadData()
     {
         musicVolume = PlayerPrefs.GetFloat("musicVolume");
         fxVolume = PlayerPrefs.GetFloat("fxVolume");
@@ -49,17 +39,16 @@ public class Manager : MonoBehaviour
         fxSlider.value = fxVolume;
     }
 
-    // Funkcja robiąca to co trzeba gdy zmienisz wartość slidera
-    public void SliderValueChanged(bool isMusic)
+    public void SliderValueChanged(string volumeType) // music, fx
     {
-        switch (isMusic)
+        switch (volumeType)
         {
-            case true:
+            case "music":
                 musicVolume = musicSlider.value;
                 mixer.SetFloat("musicVolume", musicVolume);
                 print("Głośność muzyki: " + musicVolume + "db");
                 break;
-            case false:
+            case "fx":
                 fxVolume = fxSlider.value;
                 mixer.SetFloat("fxVolume", fxVolume);
                 print("Głośność dźwięków: " + fxVolume + "db");
